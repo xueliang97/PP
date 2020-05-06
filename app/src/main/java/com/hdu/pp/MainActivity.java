@@ -4,7 +4,11 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.MenuItem;
 
+import com.alibaba.fastjson.JSONObject;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.hdu.libnetwork.ApiResponse;
+import com.hdu.libnetwork.GetRequest;
+import com.hdu.libnetwork.JsonCallback;
 import com.hdu.pp.utils.NavGraphBuilder;
 
 import androidx.annotation.NonNull;
@@ -35,6 +39,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     //    NavigationUI.setupWithNavController(navView, navController);
         navView.setOnNavigationItemSelectedListener(this);
         NavGraphBuilder.build(fragment.getChildFragmentManager(),navController,this,fragment.getId());
+
     }
 
     @Override
