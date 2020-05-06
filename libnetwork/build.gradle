@@ -13,6 +13,12 @@ android {
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles 'consumer-rules.pro'
+
+        javaCompileOptions{
+            annotationProcessorOptions{ //exportSchema = true  指定json文件生成位置
+                arguments=["room.schemaLocation":"$projectDir/schemas".toString()]
+            }
+        }
     }
 
     buildTypes {
