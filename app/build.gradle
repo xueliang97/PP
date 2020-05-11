@@ -21,6 +21,9 @@ android {
         sourceCompatibility "1.8"
         targetCompatibility "1.8"
     }
+    dataBinding{
+        enabled = true
+    }
 }
 
 dependencies {
@@ -43,5 +46,7 @@ dependencies {
     annotationProcessor project(":libnavcompiler")
 
     implementation 'com.alibaba:fastjson:1.2.59'
+
+
 
 }

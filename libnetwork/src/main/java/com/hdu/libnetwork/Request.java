@@ -77,7 +77,7 @@ public abstract class Request<T,R extends Request> implements Cloneable{
         return (R)this;
     }
 
-    public R CacheStrategy(@CacheStrategy int cacheStrategy){
+    public R cacheStrategy(@CacheStrategy int cacheStrategy){
 
         mCacheStrategy = cacheStrategy;
         return (R) this;
@@ -236,7 +236,7 @@ public abstract class Request<T,R extends Request> implements Cloneable{
 
     @NonNull
     @Override
-    protected Request<T, R> clone() throws CloneNotSupportedException {
+    public Request<T, R> clone() throws CloneNotSupportedException {
         return (Request<T,R>)super.clone();
     }
 }

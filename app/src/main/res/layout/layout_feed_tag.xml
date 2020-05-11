@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="tagText"
+            type="java.lang.String" />
+        <import type="android.text.TextUtils"/>
+        <import type="android.view.View"/>
+    </data>
+
+    <com.google.android.material.button.MaterialButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:icon="@drawable/icon_tag"
+        app:iconSize="@dimen/dp_12"
+        android:backgroundTint="@color/color_gray"
+        android:layout_marginLeft="@dimen/dp_16"
+        android:layout_marginBottom="@dimen/dp_10"
+        app:iconPadding="@dimen/dp_4"
+        app:iconGravity="textStart"
+        android:text="@{tagText}"
+        tools:text="神秘皮皮"
+        app:cornerRadius="@dimen/dp_25"
+        app:iconTint="@color/color_theme"
+        android:visibility="@{TextUtils.isEmpty(tagText)?View.GONE:View.VISIBLE}"
+        android:textColor="@color/color_2f2">
+
+    </com.google.android.material.button.MaterialButton>
+</layout>

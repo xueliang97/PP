@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="feedText"
+            type="java.lang.String" />
+        <import type="android.text.TextUtils"/>
+        <import type="android.view.View"/>
+    </data>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:maxLines="3"
+        android:ellipsize="end"
+        android:text="@{feedText}"
+        android:visibility="@{TextUtils.isEmpty(feedText)?View.GONE:View.VISIBLE}"
+        android:layout_marginRight="@dimen/dp_16"
+        android:layout_marginLeft="@dimen/dp_16"
+        android:layout_marginBottom="@dimen/dp_10"
+        android:textSize="@dimen/sp_16"
+        tools:text="新科娘新科娘新科娘新科娘"
+        android:textColor="@color/color_2f2">
+
+    </TextView>
+</layout>

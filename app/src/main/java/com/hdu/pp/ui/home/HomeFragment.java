@@ -12,20 +12,71 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.paging.ItemKeyedDataSource;
+import androidx.paging.PagedList;
+import androidx.paging.PagedListAdapter;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.hdu.libnavannotation.FragmentDestination;
 import com.hdu.pp.R;
+import com.hdu.pp.model.Feed;
+import com.hdu.pp.ui.AbsListFragment;
+import com.hdu.pp.ui.MutableDataSource;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+
+import java.util.List;
 
 @FragmentDestination(pageUrl = "main/tabs/home",asStarter = true)
-public class HomeFragment extends Fragment {
+public class HomeFragment extends AbsListFragment<Feed,HomeViewModel> {
     private static final String TAG = "HomeFragment";
 
-    private HomeViewModel homeViewModel;
+    private String feedType;
 
-    public View onCreateView(@NonNull LayoutInflater inflater,
-                             ViewGroup container, Bundle savedInstanceState) {
-        Log.e(TAG, "onCreateView: " );
-        View root = inflater.inflate(R.layout.fragment_home, container, false);
-        return root;
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        mViewModel.getCacheLiveData().observe(getViewLifecycleOwner(), new Observer<PagedList<Feed>>() {
+            @Override
+            public void onChanged(PagedList<Feed> feeds) {
+                submitList(feeds);
+            }
+        });
+        mViewModel.setFeedType(feedType);
+    }
+
+    @Override
+    public PagedListAdapter  getAdapter() {
+        String feedType = getArguments()==null ? "all" : getArguments().getString("feedType");
+        return new FeedAdapter(getContext(),feedType);
+    }
+
+    @Override
+    public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
+        final PagedList<Feed> currentList = adapter.getCurrentList();
+        if (currentList==null||currentList.size()<=0){
+            finishRefresh(false);
+            return;
+        }
+
+        Feed feed = currentList.get(adapter.getItemCount() - 1);
+        mViewModel.loadAfter(feed.id, new ItemKeyedDataSource.LoadCallback<Feed>() {
+            @Override
+            public void onResult(@NonNull List<Feed> data) {
+                PagedList.Config config = currentList.getConfig();
+                if (data!=null && data.size()>0){
+                    MutableDataSource dataSource = new MutableDataSource();
+                    dataSource.data.addAll(currentList);
+                    dataSource.data.addAll(data);
+                    PagedList pagedList = dataSource.buildNewPagedList(config);
+                    submitList(pagedList);
+                }
+            }
+        });
+    }
+
+    @Override
+    public void onRefresh(@NonNull RefreshLayout refreshLayout) {
+        //invalidate 之后paging会重新创建一个DataSource重新调用它的loadInitial方法加载初始化数据
+        mViewModel.getDataSource().invalidate();
     }
 }
