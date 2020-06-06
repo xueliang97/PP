@@ -7,7 +7,7 @@ import android.os.Bundle;
 import com.hdu.libnavannotation.ActivityDestination;
 import com.hdu.pp.R;
 
-@ActivityDestination(pageUrl = "main/tabs/publish",asStarter = false)
+@ActivityDestination(pageUrl = "main/tabs/publish",needLogin = true)
 public class PublishActivity extends AppCompatActivity {
 
     @Override

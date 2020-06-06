@@ -48,5 +48,7 @@ dependencies {
     implementation 'com.alibaba:fastjson:1.2.59'
 
 
+    //QQ快捷登录
+    implementation files('libs/open_sdk_r6140_lite.jar')
 
 }

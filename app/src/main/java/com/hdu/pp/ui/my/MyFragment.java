@@ -16,7 +16,7 @@ import com.hdu.pp.R;
 /**
  * A simple {@link Fragment} subclass.
  */
-@FragmentDestination(pageUrl = "main/tabs/my",asStarter = false)
+@FragmentDestination(pageUrl = "main/tabs/my",asStarter = false,needLogin = true)
 public class MyFragment extends Fragment {
 
     private static final String TAG = "MyFragment";
