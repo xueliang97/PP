@@ -1,26 +1,38 @@
 package com.hdu.pp.view;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewParent;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 
+import com.google.android.exoplayer2.Player;
+import com.google.android.exoplayer2.SimpleExoPlayer;
+import com.google.android.exoplayer2.source.MediaSource;
+import com.google.android.exoplayer2.ui.PlayerControlView;
+import com.google.android.exoplayer2.ui.PlayerView;
 import com.hdu.libcommon.PixUtils;
 import com.hdu.pp.R;
+import com.hdu.pp.exoplayer.IplayTarget;
+import com.hdu.pp.exoplayer.PageListPlay;
+import com.hdu.pp.exoplayer.PagedListPalyManager;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-public class ListPlayerView extends FrameLayout {
+public class ListPlayerView extends FrameLayout implements IplayTarget, PlayerControlView.VisibilityListener, Player.EventListener {
     private View bufferView; //缓冲进度条
     private ImageView playBtn;
     private PPImageView cover,blur;
     private String mCategory;
     private String mVideoUrl;
+    private boolean isPlaying;
 
     public ListPlayerView(@NonNull Context context) {
         this(context,null);
@@ -38,9 +50,27 @@ public class ListPlayerView extends FrameLayout {
         cover = findViewById(R.id.cover);
         blur = findViewById(R.id.blur_background);
         playBtn = findViewById(R.id.play_btn);
+
+        playBtn.setOnClickListener(v->{
+            if(isPlaying()){
+                inActive();
+            }else {
+                onActive();
+            }
+        });
     }
 
-    public void bindData(String category,int widthPx,int heightPx,String coverUrl,String videoUrl){
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        PageListPlay pageListPlay = PagedListPalyManager.get(mCategory);
+        pageListPlay.controlView.show();
+        return true;
+
+
+    }
+
+    public void bindData(String category, int widthPx, int heightPx, String coverUrl, String videoUrl){
         mCategory = category;
         mVideoUrl = videoUrl;
 
@@ -93,4 +123,98 @@ public class ListPlayerView extends FrameLayout {
     }
 
 
+    @Override
+    public ViewGroup getOwner() {
+        return this;
+    }
+
+    @Override
+    public void onActive() {
+        PageListPlay pageListPlay = PagedListPalyManager.get(mCategory);
+        PlayerView playerView = pageListPlay.playerView;
+        PlayerControlView controlView = pageListPlay.controlView;
+        SimpleExoPlayer exoPlayer = pageListPlay.exoPlayer;
+
+        ViewParent parent = playerView.getParent();
+        if(parent!=this) {
+            if (parent != null) {
+                ((ViewGroup) parent).removeView(playerView);
+            }
+            ViewGroup.LayoutParams layoutParams = cover.getLayoutParams();
+            this.addView(playerView, 1, layoutParams);
+        }
+
+        ViewParent ctrlParent = controlView.getParent();
+        if(ctrlParent!=this){
+            if (ctrlParent!=null){
+                ((ViewGroup)ctrlParent).removeView(controlView);
+            }
+
+            FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            params.gravity = Gravity.BOTTOM;
+            this.addView(controlView,params);
+            controlView.setVisibilityListener(this);
+        }
+        controlView.show();
+
+        if (TextUtils.equals(pageListPlay.playUrl,mVideoUrl)){//判断是否和上一次播放是同一个视频资源
+
+        }else{
+            MediaSource mediaSource = PagedListPalyManager.createMediaSource(mVideoUrl);
+            exoPlayer.prepare(mediaSource);
+            exoPlayer.setRepeatMode(Player.REPEAT_MODE_ONE);//无限循环播放
+            exoPlayer.addListener(this);
+        }
+
+        exoPlayer.setPlayWhenReady(true);
+    }
+
+
+    @Override
+    protected void onAttachedToWindow() {
+        super.onAttachedToWindow();
+        isPlaying = false;
+        bufferView.setVisibility(GONE);
+        cover.setVisibility(VISIBLE);
+        playBtn.setVisibility(VISIBLE);
+        playBtn.setImageResource(R.drawable.icon_video_play);
+
+    }
+
+    @Override
+    public void inActive() {
+        PageListPlay pageListPlay = PagedListPalyManager.get(mCategory);
+        pageListPlay.exoPlayer.setPlayWhenReady(false);
+        playBtn.setVisibility(VISIBLE);
+        playBtn.setImageResource(R.drawable.icon_video_play);
+    }
+
+    @Override
+    public boolean isPlaying() {
+        return isPlaying;
+    }
+
+    @Override
+    public void onVisibilityChange(int visibility) {
+        playBtn.setVisibility(visibility);
+        playBtn.setImageResource(isPlaying() ? R.drawable.icon_video_pause : R.drawable.icon_video_play);
+    }
+
+    @Override
+    public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
+        //监听播放状态
+        PageListPlay pageListPlay = PagedListPalyManager.get(mCategory);
+        SimpleExoPlayer exoPlayer = pageListPlay.exoPlayer;
+
+        if(playbackState==Player.STATE_READY&&exoPlayer.getBufferedPosition()!=0){
+            cover.setVisibility(INVISIBLE);
+            bufferView.setVisibility(INVISIBLE);
+
+        }else if(playbackState==Player.STATE_BUFFERING){
+            bufferView.setVisibility(VISIBLE);
+        }
+
+        isPlaying = playbackState == Player.STATE_READY && exoPlayer.getBufferedPosition() != 0 && playWhenReady;
+        playBtn.setImageResource(isPlaying ? R.drawable.icon_video_pause : R.drawable.icon_video_play);
+    }
 }

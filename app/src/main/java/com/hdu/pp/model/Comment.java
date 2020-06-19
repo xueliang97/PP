@@ -3,8 +3,9 @@ package com.hdu.pp.model;
 import java.io.Serializable;
 
 import androidx.annotation.Nullable;
+import androidx.databinding.BaseObservable;
 
-public class Comment implements Serializable {
+public class Comment extends BaseObservable implements Serializable {
     /**
      * id : 784
      * itemId : 6739143063064549000
@@ -51,5 +52,12 @@ public class Comment implements Serializable {
                 && hasLiked == newComment.hasLiked
                 && (author != null && author.equals(newComment.author))
                 && (ugc != null && ugc.equals(newComment.ugc));
+    }
+
+    public Ugc getUgc() {
+        if (ugc==null){
+            ugc = new Ugc();
+        }
+        return ugc;
     }
 }

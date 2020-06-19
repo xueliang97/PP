@@ -5,6 +5,7 @@ import android.text.TextUtils;
 import java.io.Serializable;
 
 import androidx.annotation.Nullable;
+import androidx.databinding.Bindable;
 
 public class Feed  implements Serializable {//帖子
 
@@ -44,6 +45,14 @@ public class Feed  implements Serializable {//帖子
     public User author;
     public Comment topComment;
     public Ugc ugc;
+
+    @Bindable
+    public Ugc getUgc(){
+        if (ugc==null){
+            ugc = new Ugc();
+        }
+        return ugc;
+    }
 
     @Override
     public boolean equals(@Nullable Object obj) {

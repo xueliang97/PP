@@ -8,6 +8,7 @@ import com.hdu.libnetwork.ApiService;
 import com.hdu.libnetwork.JsonCallback;
 import com.hdu.libnetwork.Request;
 import com.hdu.pp.AbsViewModel;
+import com.hdu.pp.login.MyUserManager;
 import com.hdu.pp.model.Feed;
 import com.hdu.pp.ui.MutableDataSource;
 
@@ -90,7 +91,7 @@ public class HomeViewModel extends AbsViewModel<Feed> {
 
         Request request = ApiService.get("/feeds/queryHotFeedsList")
                 .addParam("feedType", null)
-                .addParam("userId", 0)
+                .addParam("userId", MyUserManager.get().getUserId())
                 .addParam("feedId", key)
                 .addParam("pageCount", 10)
                 .responseType(new TypeReference<ArrayList<Feed>>() {

@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.hdu.libnavannotation.FragmentDestination;
 import com.hdu.pp.R;
+import com.hdu.pp.exoplayer.PageListPlayDetector;
 import com.hdu.pp.model.Feed;
 import com.hdu.pp.ui.AbsListFragment;
 import com.hdu.pp.ui.MutableDataSource;
@@ -29,7 +30,7 @@ import java.util.List;
 @FragmentDestination(pageUrl = "main/tabs/home",asStarter = true)
 public class HomeFragment extends AbsListFragment<Feed,HomeViewModel> {
     private static final String TAG = "HomeFragment";
-
+    private PageListPlayDetector playDetector;
     private String feedType;
 
 
@@ -41,13 +42,29 @@ public class HomeFragment extends AbsListFragment<Feed,HomeViewModel> {
                 submitList(feeds);
             }
         });
+        playDetector = new PageListPlayDetector(this, mRecyclerView);
+
         mViewModel.setFeedType(feedType);
     }
 
     @Override
     public PagedListAdapter  getAdapter() {
         String feedType = getArguments()==null ? "all" : getArguments().getString("feedType");
-        return new FeedAdapter(getContext(),feedType);
+        return new FeedAdapter(getContext(),feedType){
+            @Override
+            public void onViewAttachedToWindow(@NonNull ViewHolder holder) {
+                super.onViewAttachedToWindow(holder);
+                if (holder.isVideoItem()) {
+                    playDetector.addTarget(holder.getListPlayerView());
+                }
+            }
+
+            @Override
+            public void onViewDetachedFromWindow(@NonNull ViewHolder holder) {
+                super.onViewDetachedFromWindow(holder);
+                playDetector.removeTarget(holder.getListPlayerView());
+            }
+        };
     }
 
     @Override
@@ -78,5 +95,17 @@ public class HomeFragment extends AbsListFragment<Feed,HomeViewModel> {
     public void onRefresh(@NonNull RefreshLayout refreshLayout) {
         //invalidate 之后paging会重新创建一个DataSource重新调用它的loadInitial方法加载初始化数据
         mViewModel.getDataSource().invalidate();
+    }
+
+    @Override
+    public void onPause() {
+        playDetector.onPause();
+        super.onPause();
+    }
+
+    @Override
+    public void onResume() {
+        playDetector.onResume();
+        super.onResume();
     }
 }
