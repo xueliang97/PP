@@ -4,14 +4,16 @@ import android.content.res.AssetManager;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
-import com.hdu.libcommon.AppGlobals;
+import com.hdu.libcommon.global.AppGlobals;
 import com.hdu.pp.model.BottomBar;
 import com.hdu.pp.model.Destination;
+import com.hdu.pp.model.SofaTab;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.Collections;
 import java.util.HashMap;
 
 public class AppConfig {//Json解析成实体类并存入Map
@@ -20,6 +22,8 @@ public class AppConfig {//Json解析成实体类并存入Map
 
     private static BottomBar sBottomBar;
 
+    private static SofaTab sSofaTab;
+
     public static BottomBar getBottomBar(){
         if (sBottomBar == null){
             String content = parseFile("main_tabs_config.json");
@@ -27,6 +31,15 @@ public class AppConfig {//Json解析成实体类并存入Map
         }
 
         return sBottomBar;
+    }
+
+    public static SofaTab getsSofaTab(){
+        if (sSofaTab==null){
+            String content = parseFile("sofa_tabs_config.json");
+            sSofaTab = JSON.parseObject(content, SofaTab.class);
+            Collections.sort(sSofaTab.tabs,(o1,o2)->o1.index<o2.index?-1:1);
+        }
+        return sSofaTab;
     }
 
     public static HashMap<String, Destination> getsDestConfig() {

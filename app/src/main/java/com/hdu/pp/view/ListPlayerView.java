@@ -17,7 +17,7 @@ import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.ui.PlayerControlView;
 import com.google.android.exoplayer2.ui.PlayerView;
-import com.hdu.libcommon.PixUtils;
+import com.hdu.libcommon.utils.PixUtils;
 import com.hdu.pp.R;
 import com.hdu.pp.exoplayer.IplayTarget;
 import com.hdu.pp.exoplayer.PageListPlay;

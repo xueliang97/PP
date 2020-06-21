@@ -10,7 +10,7 @@ import com.bumptech.glide.RequestBuilder;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
-import com.hdu.libcommon.PixUtils;
+import com.hdu.libcommon.utils.PixUtils;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;

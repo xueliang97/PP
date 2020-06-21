@@ -1,13 +1,10 @@
 package com.hdu.libnetwork.cache;
 
-import com.hdu.libcommon.AppGlobals;
+import com.hdu.libcommon.global.AppGlobals;
 
-import androidx.annotation.NonNull;
 import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
-import androidx.room.migration.Migration;
-import androidx.sqlite.db.SupportSQLiteDatabase;
 
 //创建Room数据库 注解      entities 表映射成javaBean    导出关于数据库的json文件
 @Database(entities = {Cache.class},version = 1,exportSchema = true)

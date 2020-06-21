@@ -15,6 +15,7 @@ import com.hdu.pp.model.Destination;
 import com.hdu.pp.model.User;
 import com.hdu.pp.utils.AppConfig;
 import com.hdu.pp.utils.NavGraphBuilder;
+import com.hdu.pp.utils.StatusBar;
 import com.hdu.pp.view.AppBottomBar;
 
 import java.util.HashMap;
@@ -37,6 +38,8 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setTheme(R.style.AppTheme);
+        StatusBar.fitSystemBar(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         navView = findViewById(R.id.nav_view);

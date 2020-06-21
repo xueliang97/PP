@@ -14,7 +14,7 @@ import com.google.android.exoplayer2.upstream.cache.CacheDataSourceFactory;
 import com.google.android.exoplayer2.upstream.cache.LeastRecentlyUsedCacheEvictor;
 import com.google.android.exoplayer2.upstream.cache.SimpleCache;
 import com.google.android.exoplayer2.util.Util;
-import com.hdu.libcommon.AppGlobals;
+import com.hdu.libcommon.global.AppGlobals;
 
 import java.util.HashMap;
 

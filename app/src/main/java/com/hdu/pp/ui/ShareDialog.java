@@ -18,7 +18,7 @@ import android.view.Window;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
-import com.hdu.libcommon.PixUtils;
+import com.hdu.libcommon.utils.PixUtils;
 import com.hdu.libcommon.RoundFrameLayout;
 import com.hdu.libcommon.ViewHelper;
 import com.hdu.pp.R;

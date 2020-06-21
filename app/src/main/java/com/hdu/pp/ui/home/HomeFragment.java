@@ -33,6 +33,15 @@ public class HomeFragment extends AbsListFragment<Feed,HomeViewModel> {
     private PageListPlayDetector playDetector;
     private String feedType;
 
+    public static HomeFragment newInstance(String feedType) {
+
+        Bundle args = new Bundle();
+        args.putString("feedType",feedType);
+        HomeFragment fragment = new HomeFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
+
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -98,6 +107,16 @@ public class HomeFragment extends AbsListFragment<Feed,HomeViewModel> {
     }
 
     @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if(hidden){
+            playDetector.onPause();
+        }else {
+            playDetector.onResume();
+        }
+    }
+
+    @Override
     public void onPause() {
         playDetector.onPause();
         super.onPause();
@@ -105,7 +124,17 @@ public class HomeFragment extends AbsListFragment<Feed,HomeViewModel> {
 
     @Override
     public void onResume() {
-        playDetector.onResume();
         super.onResume();
+        //只恢复对用户可见页面的视频播放
+        if (getParentFragment()!=null){
+            if (getParentFragment().isVisible()&&isVisible()){
+                playDetector.onResume();
+            }
+        }else {
+            if (isVisible()){
+                playDetector.onResume();
+            }
+        }
+
     }
 }

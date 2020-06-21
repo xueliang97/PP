@@ -2,7 +2,7 @@ package com.hdu.pp.utils;
 
 import android.content.ComponentName;
 
-import com.hdu.libcommon.AppGlobals;
+import com.hdu.libcommon.global.AppGlobals;
 import com.hdu.pp.FixFragmentNavigator;
 import com.hdu.pp.model.Destination;
 

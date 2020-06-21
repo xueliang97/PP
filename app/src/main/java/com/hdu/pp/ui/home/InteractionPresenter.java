@@ -6,7 +6,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.alibaba.fastjson.JSONObject;
-import com.hdu.libcommon.AppGlobals;
+import com.hdu.libcommon.global.AppGlobals;
 import com.hdu.libnetwork.ApiResponse;
 import com.hdu.libnetwork.ApiService;
 import com.hdu.libnetwork.JsonCallback;
@@ -23,7 +23,7 @@ import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 
-public class InterationPresenter {
+public class InteractionPresenter {
 
     public static final String DATA_FROM_INTERACTION = "data_from_interaction";
 

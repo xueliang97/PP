@@ -1,4 +1,4 @@
-package com.hdu.libcommon;
+package com.hdu.libcommon.global;
 
 import android.app.Application;
 

@@ -1,6 +1,8 @@
-package com.hdu.libcommon;
+package com.hdu.libcommon.utils;
 
 import android.util.DisplayMetrics;
+
+import com.hdu.libcommon.global.AppGlobals;
 
 public class PixUtils {
     public static int dp2px(int dpValue){  //dp ->px

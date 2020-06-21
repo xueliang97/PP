@@ -12,7 +12,7 @@
             type="androidx.lifecycle.LifecycleOwner" />
         <import type="com.hdu.pp.model.Feed"/>
         <import type="com.hdu.pp.utils.StringConvert"/>
-        <import type="com.hdu.pp.ui.home.InterationPresenter"/>
+        <import type="com.hdu.pp.ui.home.InteractionPresenter"/>
         <import type="android.content.Context" />
 
     </data>
@@ -36,7 +36,7 @@
             app:iconTint="@{feed.ugc.hasLiked?@color/color_theme:@color/color_3d3}"
             tools:text="1000"
             tools:textColor="@color/color_theme"
-            android:onClick="@{()->InterationPresenter.toggleFeedLike(lifeCyclerOwner,feed)}"
+            android:onClick="@{()->InteractionPresenter.toggleFeedLike(lifeCyclerOwner,feed)}"
             tools:icon="@drawable/icon_cell_liked"
             tools:iconTint="@color/color_3d3"
             android:textColor="@{feed.ugc.hasLiked?@color/color_theme:@color/color_3d3}"
@@ -48,7 +48,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:onClick="@{()->InterationPresenter.toggleFeedDiss(lifeCyclerOwner,feed)}"
+            android:onClick="@{()->InteractionPresenter.toggleFeedDiss(lifeCyclerOwner,feed)}"
             android:text="踩"
             android:textColor="@{feed.ugc.hasdiss?@color/color_theme:@color/color_3d3}"
             android:textSize="@dimen/sp_14"
@@ -89,7 +89,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:onClick="@{()->InterationPresenter.openShare((Context)lifeCyclerOwner,feed)}"
+            android:onClick="@{()->InteractionPresenter.openShare((Context)lifeCyclerOwner,feed)}"
             android:text="@{feed.ugc.shareCount>0?StringConvert.convertFeedUgc(feed.ugc.shareCount):@string/share}"
             android:textColor="@color/color_3d3"
             android:textSize="@dimen/sp_14"

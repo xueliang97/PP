@@ -5,9 +5,10 @@ import android.text.TextUtils;
 import java.io.Serializable;
 
 import androidx.annotation.Nullable;
+import androidx.databinding.BaseObservable;
 import androidx.databinding.Bindable;
 
-public class Feed  implements Serializable {//帖子
+public class Feed extends BaseObservable implements Serializable {//帖子
 
     public static final int TYPE_IMAGE =1;
     public static final int TYPE_VIDEO =2;
