@@ -6,15 +6,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.hdu.libcommon.extention.LiveDataBus;
 import com.hdu.pp.R;
 import com.hdu.pp.databinding.LayoutFeedTypeImageBinding;
 import com.hdu.pp.databinding.LayoutFeedTypeVideoBinding;
 import com.hdu.pp.model.Feed;
+import com.hdu.pp.ui.detail.FeedDetailActivity;
 import com.hdu.pp.view.ListPlayerView;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.ViewDataBinding;
 import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.Observer;
 import androidx.paging.PagedListAdapter;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
@@ -63,6 +66,33 @@ public class FeedAdapter extends PagedListAdapter<Feed,FeedAdapter.ViewHolder> {
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         final  Feed feed = getItem(position);
         holder.bindData(feed);
+        holder.itemView.setOnClickListener((v)->{
+            FeedDetailActivity.startFeedDetailActivity(mContext,getItem(position),mCategory);
+            if (mFeedObserver==null){
+                mFeedObserver = new FeedObserver();
+                LiveDataBus.get().with(InteractionPresenter.DATA_FROM_INTERACTION)
+                        .observe((LifecycleOwner)mContext,mFeedObserver);
+            }
+            mFeedObserver.setFeed(feed);
+
+        });
+    }
+
+    private FeedObserver mFeedObserver;
+    private class FeedObserver implements Observer<Feed>{
+        private Feed mFeed;
+        @Override
+        public void onChanged(Feed feed) {
+            if (mFeed.id!=feed.id)
+                return;
+            mFeed.author = feed.author;
+            mFeed.ugc = feed.ugc;
+            mFeed.notifyChange();
+        }
+
+        public void setFeed(Feed feed) {
+            mFeed = feed;
+        }
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

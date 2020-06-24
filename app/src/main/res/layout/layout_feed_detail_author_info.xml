@@ -13,7 +13,11 @@
         <variable
             name="fullscreen"
             type="Boolean" />
+        <variable
+            name="owner"
+            type="androidx.lifecycle.LifecycleOwner" />
         <import type="com.hdu.pp.utils.TimeUtils"/>
+        <import type="com.hdu.pp.ui.home.InteractionPresenter"/>
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -72,7 +76,7 @@
             android:layout_marginRight="@dimen/dp_16"
             android:backgroundTint="@{fullscreen?@color/transparent:@color/color_theme}"
             android:gravity="center"
-
+            android:onClick="@{()->InteractionPresenter.toggleFollowUser(owner,feed)}"
             android:paddingLeft="@dimen/dp_16"
             android:paddingTop="@dimen/dp_5"
             android:paddingRight="@dimen/dp_16"

@@ -1,5 +1,7 @@
 package com.hdu.pp.ui.detail;
 
+import android.app.Activity;
+import android.content.Context;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,7 +11,14 @@ import com.hdu.libcommon.utils.PixUtils;
 import com.hdu.pp.databinding.LayoutFeedCommentListItemBinding;
 import com.hdu.pp.login.MyUserManager;
 import com.hdu.pp.model.Comment;
+import com.hdu.pp.ui.MutableItemKeyedDataSource;
+import com.hdu.pp.ui.home.InteractionPresenter;
+import com.hdu.pp.ui.publish.PreviewActivity;
+
 import androidx.annotation.NonNull;
+import androidx.lifecycle.LifecycleOwner;
+import androidx.paging.ItemKeyedDataSource;
+import androidx.paging.PagedList;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -18,7 +27,8 @@ import androidx.recyclerview.widget.RecyclerView;
  */
 public class FeedCommentAdapter extends AbsPagedListAdapter<Comment, FeedCommentAdapter.ViewHolder> {
 
-    protected FeedCommentAdapter() {
+    private Context mContext;
+    protected FeedCommentAdapter(Context context) {
         super(new DiffUtil.ItemCallback<Comment>() {
             @Override
             public boolean areItemsTheSame(@NonNull Comment oldItem, @NonNull Comment newItem) {
@@ -30,6 +40,7 @@ public class FeedCommentAdapter extends AbsPagedListAdapter<Comment, FeedComment
                 return oldItem.equals(newItem);
             }
         });
+        mContext = context;
     }
 
     @Override
@@ -47,6 +58,48 @@ public class FeedCommentAdapter extends AbsPagedListAdapter<Comment, FeedComment
     protected void onBindViewHolder2(ViewHolder holder, int position) {
         Comment item = getItem(position);
         holder.bindData(item);
+        holder.mBinding.commentDelete.setOnClickListener((v)->{
+            InteractionPresenter.deleteFeedComment(mContext,item.itemId,item.commentId)
+                    .observe((LifecycleOwner) mContext,(success)->{
+                        if (success) {
+                            MutableItemKeyedDataSource<Integer, Comment> dataSource = new MutableItemKeyedDataSource<Integer, Comment>((ItemKeyedDataSource) getCurrentList().getDataSource()) {
+                                @NonNull
+                                @Override
+                                public Integer getKey(@NonNull Comment item) {
+                                    return item.id;
+                                }
+                            };
+                            PagedList<Comment> currentList =  getCurrentList();
+                            for (Comment com:currentList){
+                                if (com!=getItem(position)){
+                                    dataSource.data.add(com);
+                                }
+                            }
+                            PagedList<Comment> newPagedList = dataSource.buildNewPagedList(getCurrentList().getConfig());
+                            submitList(newPagedList);
+                        }
+                    });
+        });
+        holder.mBinding.commentCover.setOnClickListener((v)->{
+            boolean isVideo = item.commentType==Comment.COMMENT_TYPE_VIDEO;
+            PreviewActivity.startActivityForResult((Activity) mContext, isVideo ? item.videoUrl : item.imageUrl, isVideo, null);
+        });
+
+    }
+
+    public void addAndRefreshList(Comment comment) {
+        PagedList<Comment> currentList = getCurrentList();
+        MutableItemKeyedDataSource<Integer, Comment> mutableItemKeyedDataSource = new MutableItemKeyedDataSource<Integer, Comment>((ItemKeyedDataSource) currentList.getDataSource()) {
+            @NonNull
+            @Override
+            public Integer getKey(@NonNull Comment item) {
+                return item.id;
+            }
+        };
+        mutableItemKeyedDataSource.data.add(comment);
+        mutableItemKeyedDataSource.data.addAll(currentList);
+        PagedList<Comment> pagedList = mutableItemKeyedDataSource.buildNewPagedList(currentList.getConfig());
+        submitList(pagedList);
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

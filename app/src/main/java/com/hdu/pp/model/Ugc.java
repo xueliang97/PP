@@ -85,4 +85,14 @@ public class Ugc extends BaseObservable implements Serializable {//帖子下面�
                 && hasLiked == newUgc.hasLiked
                 && hasdiss == newUgc.hasdiss;
     }
+
+    @Bindable
+    public boolean isHasFavorite() {
+        return hasFavorite;
+    }
+
+    public void setHasFavorite(boolean hasFavorite) {
+        this.hasFavorite = hasFavorite;
+        notifyPropertyChanged(BR._all);
+    }
 }

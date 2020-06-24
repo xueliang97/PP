@@ -77,4 +77,9 @@ public class Feed extends BaseObservable implements Serializable {//帖子
                 && (topComment != null && topComment.equals(newFeed.topComment))
                 && (ugc != null && ugc.equals(newFeed.ugc));
     }
+
+    @Bindable
+    public User getAuthor() {
+        return author;
+    }
 }

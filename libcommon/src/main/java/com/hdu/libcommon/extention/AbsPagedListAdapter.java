@@ -78,6 +78,14 @@ public abstract class AbsPagedListAdapter<T,VH extends RecyclerView.ViewHolder> 
         return position<mHeaders.size();
     }
 
+    // 移除头部
+    public void removeHeaderView(View view) {
+        int index = mHeaders.indexOfValue(view);
+        if (index < 0) return;
+        mHeaders.removeAt(index);
+        notifyDataSetChanged();
+    }
+
     @NonNull
     @Override
     public VH onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {

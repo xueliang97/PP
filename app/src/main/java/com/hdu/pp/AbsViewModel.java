@@ -76,6 +76,7 @@ public abstract class AbsViewModel<T> extends ViewModel {
         }
     };
 
+    //创建提供数据的数据源对象
     public abstract DataSource createDataSource() ;
 
     //做一些清理工作
@@ -83,4 +84,6 @@ public abstract class AbsViewModel<T> extends ViewModel {
     protected void onCleared() {
         super.onCleared();
     }
+
+
 }

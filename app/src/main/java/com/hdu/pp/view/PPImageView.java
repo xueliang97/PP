@@ -31,6 +31,9 @@ public class PPImageView extends AppCompatImageView {//重写ImageView 使其可
         super(context, attrs, defStyleAttr);
     }
 
+    public void setImageUrl(String imageUrl) {
+        setImageUrl(this, imageUrl, false);
+    }
 
 
     @BindingAdapter(value = {"image_url","isCircle"},requireAll = false) //databinding绑定的函数，从网络上加载绑定头像

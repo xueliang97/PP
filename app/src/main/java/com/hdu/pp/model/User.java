@@ -5,8 +5,11 @@ import android.text.TextUtils;
 import java.io.Serializable;
 
 import androidx.annotation.Nullable;
+import androidx.databinding.BaseObservable;
+import androidx.databinding.Bindable;
+import androidx.databinding.library.baseAdapters.BR;
 
-public class User implements Serializable {
+public class User extends BaseObservable implements Serializable {
     /**
      * id : 962
      * userId : 3223400206308231
@@ -65,5 +68,15 @@ public class User implements Serializable {
                 && favoriteCount == newUser.favoriteCount
                 && feedCount == newUser.feedCount
                 && hasFollow == newUser.hasFollow;
+    }
+
+    @Bindable
+    public boolean isHasFollow() {
+        return hasFollow;
+    }
+
+    public void setHasFollow(boolean hasFollow) {
+        this.hasFollow = hasFollow;
+        notifyPropertyChanged(BR._all);
     }
 }

@@ -9,7 +9,14 @@
         <variable
             name="fullscreen"
             type="Boolean" />
+        <variable
+            name="owner"
+            type="androidx.lifecycle.LifecycleOwner" />
+
         <import type="android.view.View"/>
+
+        <import type="com.hdu.pp.ui.home.InteractionPresenter"/>
+        <import type="android.content.Context"/>
 
     </data>
 
@@ -57,7 +64,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center"
-
+                android:onClick="@{()->InteractionPresenter.toggleFeedFavorite(owner,feed)}"
                 android:orientation="vertical">
 
                 <androidx.appcompat.widget.AppCompatImageView
@@ -87,7 +94,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center"
-
+                android:onClick="@{()->InteractionPresenter.toggleFeedFavorite(owner,feed)}"
                 android:orientation="vertical">
 
                 <androidx.appcompat.widget.AppCompatImageView
@@ -117,7 +124,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center"
-
+                android:onClick="@{()->InteractionPresenter.openShare((Context)owner,feed)}"
                 android:orientation="vertical">
 
                 <androidx.appcompat.widget.AppCompatImageView
