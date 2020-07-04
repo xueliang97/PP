@@ -25,8 +25,8 @@ import androidx.recyclerview.widget.RecyclerView;
  **/
 public abstract class ViewHandler {
 
-    private final FragmentActivity mActivity;
-    private Feed mFeed;
+    protected  FragmentActivity mActivity;
+    protected Feed mFeed;
     protected RecyclerView mRecyclerView;
     protected LayoutFeedDetailBottomInteractionBinding mInteractionBinding;
     protected FeedCommentAdapter listAdapter;
@@ -95,5 +95,15 @@ public abstract class ViewHandler {
         if (commentDialog!=null && commentDialog.isAdded()){
             commentDialog.onActivityResult(requestCode,resultCode,data);
         }
+    }
+
+    public void onPause() {
+    }
+
+    public void onResume(){
+
+    }
+
+    public void onBackPressed() {
     }
 }

@@ -27,12 +27,14 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 public class ListPlayerView extends FrameLayout implements IplayTarget, PlayerControlView.VisibilityListener, Player.EventListener {
-    private View bufferView; //缓冲进度条
-    private ImageView playBtn;
-    private PPImageView cover,blur;
-    private String mCategory;
-    private String mVideoUrl;
-    private boolean isPlaying;
+    public View bufferView; //缓冲进度条
+    public ImageView playBtn;
+    public PPImageView cover,blur;
+    protected String mCategory;
+    protected String mVideoUrl;
+    protected boolean isPlaying;
+    protected int mWidthPx;
+    protected int mHeightPx;
 
     public ListPlayerView(@NonNull Context context) {
         this(context,null);
@@ -73,6 +75,8 @@ public class ListPlayerView extends FrameLayout implements IplayTarget, PlayerCo
     public void bindData(String category, int widthPx, int heightPx, String coverUrl, String videoUrl){
         mCategory = category;
         mVideoUrl = videoUrl;
+        mHeightPx = heightPx;
+        mWidthPx = widthPx;
 
         cover.setImageUrl(cover,coverUrl,false);
         if (widthPx<heightPx){
@@ -84,7 +88,7 @@ public class ListPlayerView extends FrameLayout implements IplayTarget, PlayerCo
         setSize(widthPx,heightPx);
     }
 
-    private void setSize(int widthPx, int heightPx) {//设置真实的宽和高
+    public void setSize(int widthPx, int heightPx) {//设置真实的宽和高
         int maxWidth = PixUtils.getScreenWidth();
         int maxHeight = maxWidth;
 
@@ -135,6 +139,10 @@ public class ListPlayerView extends FrameLayout implements IplayTarget, PlayerCo
         PlayerControlView controlView = pageListPlay.controlView;
         SimpleExoPlayer exoPlayer = pageListPlay.exoPlayer;
 
+        //此处我们需要主动调用一次 switchPlayerView，把播放器Exoplayer和展示视频画面的View ExoplayerView相关联
+        //为什么呢？因为在列表页点击视频Item跳转到视频详情页的时候，详情页会复用列表页的播放器Exoplayer，然后和新创建的展示视频画面的View ExoplayerView相关联，达到视频无缝续播的效果
+        //如果 我们再次返回列表页，则需要再次把播放器和ExoplayerView相关联
+        pageListPlay.switchPlayerView(playerView, true);
         ViewParent parent = playerView.getParent();
         if(parent!=this) {
             if (parent != null) {
@@ -216,5 +224,10 @@ public class ListPlayerView extends FrameLayout implements IplayTarget, PlayerCo
 
         isPlaying = playbackState == Player.STATE_READY && exoPlayer.getBufferedPosition() != 0 && playWhenReady;
         playBtn.setImageResource(isPlaying ? R.drawable.icon_video_pause : R.drawable.icon_video_play);
+    }
+
+    public View getPlayController() {
+        PageListPlay listPlay = PagedListPalyManager.get(mCategory);
+        return listPlay.controlView;
     }
 }

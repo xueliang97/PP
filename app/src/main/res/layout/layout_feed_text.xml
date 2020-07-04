@@ -13,8 +13,8 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:maxLines="3"
         android:ellipsize="end"
+        android:lines="3"
         android:text="@{feedText}"
         android:visibility="@{TextUtils.isEmpty(feedText)?View.GONE:View.VISIBLE}"
         android:layout_marginRight="@dimen/dp_16"

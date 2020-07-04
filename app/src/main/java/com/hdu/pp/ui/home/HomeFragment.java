@@ -32,6 +32,7 @@ public class HomeFragment extends AbsListFragment<Feed,HomeViewModel> {
     private static final String TAG = "HomeFragment";
     private PageListPlayDetector playDetector;
     private String feedType;
+    private boolean shouldPause = true;
 
     public static HomeFragment newInstance(String feedType) {
 
@@ -72,6 +73,12 @@ public class HomeFragment extends AbsListFragment<Feed,HomeViewModel> {
             public void onViewDetachedFromWindow(@NonNull ViewHolder holder) {
                 super.onViewDetachedFromWindow(holder);
                 playDetector.removeTarget(holder.getListPlayerView());
+            }
+
+            @Override
+            public void onStartFeedDetailActivity(Feed feed) {
+                boolean isVideo = feed.itemType==Feed.TYPE_VIDEO;
+                shouldPause = !isVideo;
             }
         };
     }
@@ -118,7 +125,9 @@ public class HomeFragment extends AbsListFragment<Feed,HomeViewModel> {
 
     @Override
     public void onPause() {
-        playDetector.onPause();
+        if (shouldPause){
+            playDetector.onPause();
+        }
         super.onPause();
     }
 

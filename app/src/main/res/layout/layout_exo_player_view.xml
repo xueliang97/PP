@@ -11,6 +11,6 @@
     app:resize_mode="zoom"
     app:show_buffering="never"
     app:player_layout_id="@layout/layout_simple_exo_player_view"
-    app:use_controller="false">    <!--指定playerView布局样式-->
+    app:use_controller="false">    <!--指定playerView布局样式 默认exoPlayer的布局比较复杂 提供一个自定义的-->
 
 </com.google.android.exoplayer2.ui.PlayerView>

@@ -68,6 +68,7 @@ public class FeedAdapter extends PagedListAdapter<Feed,FeedAdapter.ViewHolder> {
         holder.bindData(feed);
         holder.itemView.setOnClickListener((v)->{
             FeedDetailActivity.startFeedDetailActivity(mContext,getItem(position),mCategory);
+            onStartFeedDetailActivity(feed);
             if (mFeedObserver==null){
                 mFeedObserver = new FeedObserver();
                 LiveDataBus.get().with(InteractionPresenter.DATA_FROM_INTERACTION)
@@ -76,6 +77,9 @@ public class FeedAdapter extends PagedListAdapter<Feed,FeedAdapter.ViewHolder> {
             mFeedObserver.setFeed(feed);
 
         });
+    }
+
+    public void onStartFeedDetailActivity(Feed feed) {
     }
 
     private FeedObserver mFeedObserver;

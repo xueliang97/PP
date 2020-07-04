@@ -41,4 +41,13 @@
         <item name="elevation">0dp</item>
     </style>
 
+    <declare-styleable name="view_anchor_behavior">
+        <attr name="anchorId" format="integer"></attr>
+    </declare-styleable>
+
+    <declare-styleable name="view_zoom_behavior">
+        <attr name = "min_height" format="dimension"/> <!--FullPlayView最小高度-->
+        <attr name="scrolling_id" format="integer"/>  <!--当前页面的评论列表-->
+    </declare-styleable>
+
 </resources>
