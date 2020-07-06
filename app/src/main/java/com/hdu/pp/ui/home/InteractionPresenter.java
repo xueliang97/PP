@@ -14,6 +14,7 @@ import com.hdu.libnetwork.JsonCallback;
 import com.hdu.pp.login.MyUserManager;
 import com.hdu.pp.model.Comment;
 import com.hdu.pp.model.Feed;
+import com.hdu.pp.model.TagList;
 import com.hdu.pp.model.User;
 import com.hdu.pp.ui.ShareDialog;
 
@@ -307,6 +308,36 @@ public class InteractionPresenter {
                             boolean result = response.body.getBooleanValue("result");
                             ((MutableLiveData) liveData).postValue(result);
                             showToast("评论删除成功");
+                        }
+                    }
+
+                    @Override
+                    public void onError(ApiResponse<JSONObject> response) {
+                        showToast(response.message);
+                    }
+                });
+    }
+
+    public static void toggleTagLike(LifecycleOwner owner, TagList tagList){
+        if (!isLogin(owner,(user)->{
+            toggleTagLikeInternal(tagList);
+        }));
+        else{
+            toggleTagLikeInternal(tagList);
+        }
+
+    }
+
+    private static void toggleTagLikeInternal(TagList tagList) {
+        ApiService.get("/tag/toggleTagFollow")
+                .addParam("tagId", tagList.tagId)
+                .addParam("userId", MyUserManager.get().getUserId())
+                .execute(new JsonCallback<JSONObject>() {
+                    @Override
+                    public void onSuccess(ApiResponse<JSONObject> response) {
+                        if (response.body != null) {
+                            Boolean follow = response.body.getBoolean("hasFollow");
+                            tagList.setHasFollow(follow);
                         }
                     }
 

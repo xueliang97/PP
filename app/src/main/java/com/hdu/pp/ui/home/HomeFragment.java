@@ -80,6 +80,17 @@ public class HomeFragment extends AbsListFragment<Feed,HomeViewModel> {
                 boolean isVideo = feed.itemType==Feed.TYPE_VIDEO;
                 shouldPause = !isVideo;
             }
+
+            //每提交一次pageList对象到adapter就会触发
+            //每调用一次adapter.submitlist
+            @Override
+            public void onCurrentListChanged(@Nullable PagedList<Feed> previousList, @Nullable PagedList<Feed> currentList) {
+                if (previousList!=null&&currentList!=null){
+                    if (!currentList.containsAll(previousList)){//下拉刷新
+                        mRecyclerView.scrollToPosition(0);
+                    }
+                }
+            }
         };
     }
 

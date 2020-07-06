@@ -36,8 +36,8 @@ import java.util.Map;
 public class SofaFragment extends Fragment {
     private static final String TAG = "SofaFragment";
 
-    private FragmentSofaBinding binding;
-    private ViewPager2 viewPager;
+    protected FragmentSofaBinding binding;
+    protected ViewPager2 viewPager;
     private TabLayout tabLayout;
     private ArrayList<SofaTab.Tabs> tabs;
     private SofaTab tabConfig;
@@ -137,12 +137,12 @@ public class SofaFragment extends Fragment {
         return tabView;
     }
 
-    private Fragment getTabFragment(int position) {
+    public Fragment getTabFragment(int position) {
 
         return HomeFragment.newInstance(tabs.get(position).toString());
     }
 
-    private SofaTab getTabConfig() {
+    public SofaTab getTabConfig() {
         return AppConfig.getsSofaTab();
     }
 

@@ -22,7 +22,7 @@ public class AppConfig {//Json解析成实体类并存入Map
 
     private static BottomBar sBottomBar;
 
-    private static SofaTab sSofaTab;
+    private static SofaTab sSofaTab,sFindTabConfig;
 
     public static BottomBar getBottomBar(){
         if (sBottomBar == null){
@@ -76,6 +76,15 @@ public class AppConfig {//Json解析成实体类并存入Map
             }
         }
         return builder.toString();
+    }
+
+    public static SofaTab getFindTabConfig(){
+        if (sFindTabConfig==null){
+            String content = parseFile("find_tabs_config.json");
+            sFindTabConfig = JSON.parseObject(content, SofaTab.class);
+            Collections.sort(sSofaTab.tabs,(o1,o2)->o1.index<o2.index?-1:1);
+        }
+        return sFindTabConfig;
     }
 
 }

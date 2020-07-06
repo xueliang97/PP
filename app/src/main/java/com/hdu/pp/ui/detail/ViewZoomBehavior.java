@@ -126,7 +126,6 @@ public class ViewZoomBehavior extends CoordinatorLayout.Behavior<FullScreenPlaye
         @Override
         public void onViewReleased(@NonNull View releasedChild, float xvel, float yvel) {
             super.onViewReleased(releasedChild, xvel, yvel);
-            //bugfix:这里应该是refChild.getBottom() < childOriginalHeight
             if (refChild.getBottom() > minHeight && refChild.getBottom() < childOriginalHeight && yvel != 0) {
                 refChild.removeCallbacks(runnable);
                 runnable = new FlingRunnable(refChild);
